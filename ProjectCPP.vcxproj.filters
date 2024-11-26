@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Field.cpp">
+      <Filter>MVC\Model\Field</Filter>
+    </ClCompile>
+    <ClCompile Include="Image.cpp">
+      <Filter>MVC\Model\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="ConsoleView.cpp">
+      <Filter>MVC\View</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller.cpp">
+      <Filter>MVC\Controller</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="MVC">
+      <UniqueIdentifier>{9cab4a1c-b699-4e89-98b3-f8d6c9c632a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MVC\View">
+      <UniqueIdentifier>{e394815a-b3c4-4903-89dc-cde160af302d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MVC\Controller">
+      <UniqueIdentifier>{8940d07e-bd77-4262-8b9d-9ba6052f3de7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MVC\Model">
+      <UniqueIdentifier>{30115176-a655-40a1-97dc-e5c614c5b721}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MVC\Model\Field">
+      <UniqueIdentifier>{eb59183f-9875-4fd7-94aa-93e76d4c08a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MVC\Model\Image">
+      <UniqueIdentifier>{058d1562-01c8-416d-af18-c0507972811a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Field.h">
+      <Filter>MVC\Model\Field</Filter>
+    </ClInclude>
+    <ClInclude Include="Image.h">
+      <Filter>MVC\Model\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="ConsoleView.h">
+      <Filter>MVC\View</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller.h">
+      <Filter>MVC\Controller</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
