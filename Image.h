@@ -4,6 +4,8 @@
 
 struct Pixel {
     unsigned char color;
+
+    Pixel() : color(0) { };
 };
 
 class Image {
@@ -16,6 +18,8 @@ class Image {
 public:
 
     Image() = default;
+
+    Image& operator=(const Image&) = default;
 
     //  Гетэры
     Pixel& getPixel(int i, int j) noexcept;

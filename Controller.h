@@ -5,9 +5,14 @@
 
 class Controller {
     //Field field;
-    //Image image;
+    Image image;
     ConsoleView view;
 
 public:
+
     void run();
+
+private:
+
+    void commandFile();
 };

@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-Image::Image(int width, int height) : _width(width), _height(height) { }
+Image::Image(int width, int height) : _width(width), _height(height), _pixels(_width * _height) { }
 
 Pixel& Image::getPixel(int i, int j) noexcept
 {
@@ -51,6 +51,9 @@ bool Image::savePPM(const std::string& filename) {
         throw std::runtime_error("Не удалось открыть файл для записи");
     }
 
+    file.write(reinterpret_cast<char*>(&_width), 8);
+    file.write(reinterpret_cast<char*>(&_height), 8);
+
     for (size_t i = 0; i < _height; ++i) {
         for (size_t j = 0; j < _width; ++j) {
             file.write(reinterpret_cast<const char*>(&getPixel(i, j).color), 1);
@@ -61,6 +64,10 @@ bool Image::savePPM(const std::string& filename) {
 
 // Обрезка изображения (crop)
 Image Image::crop(int x, int y, int newWidth, int newHeight) {
+    if (x < 0 || x + newWidth >= _width || y < 0 || y + newHeight >= _height || newWidth == 0 || newHeight == 0) {
+        throw std::runtime_error("Не корректные параметры для обрезки изображения");
+    }
+
     Image crop_image(newWidth, newHeight);
     for (int i = 0; i < newHeight; ++i) {
         for (int j = 0; j < newWidth; ++j) {
