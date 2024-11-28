@@ -36,7 +36,4 @@ public:
 
     // Обрезка изображения (crop)
     Image crop(int x, int y, int newWidth, int newHeight);
-
-    //  Вывод (для отладки)
-    void print() const;
 };

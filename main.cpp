@@ -41,7 +41,6 @@ void test_image()
 
     image.readPPM("source.raw");
     image.crop(10, 10, 10, 10);
-    image.print();
 }
 
 int main() {

@@ -63,7 +63,7 @@ void Controller::commandFile()
                     filename = view.getUserInput("Введите название другого файла (с расширением): ");
                 }
                 image.readPPM(filename);
-                view.displayMessage(std::string("Файл открыт успешно."));
+                view.displayMessage(std::string("Файл открыт успешно.\n"));
                 fileIsOpen = true;
                 continue;
             }
@@ -71,11 +71,11 @@ void Controller::commandFile()
             {
                 if (!fileIsOpen)
                 {
-                    view.displayMessage(std::string("Для начала воспользуйтесь командой open чтобы открыть файл."));
+                    view.displayMessage(std::string("Для начала воспользуйтесь командой open чтобы открыть файл.\n"));
                 }
                 else
                 {
-                    image.print();
+                    print(image);
                 }
                 continue;
             }
@@ -83,7 +83,7 @@ void Controller::commandFile()
             {
                 if (!fileIsOpen)
                 {
-                    view.displayMessage(std::string("Для начала воспользуйтесь командой open чтобы открыть файл."));
+                    view.displayMessage(std::string("Для начала воспользуйтесь командой open чтобы открыть файл.\n"));
                 }
                 else
                 {
@@ -97,6 +97,7 @@ void Controller::commandFile()
                     ss >> height;
 
                     image = image.crop(x, y, width, height);
+                    view.displayMessage(std::string("Файл обрезан успешно.\n"));
                 }
                 continue;
             }
@@ -104,12 +105,13 @@ void Controller::commandFile()
             {
                 if (!fileIsOpen)
                 {
-                    view.displayMessage(std::string("Для начала воспользуйтесь командой open чтобы открыть файл."));
+                    view.displayMessage(std::string("Для начала воспользуйтесь командой open чтобы открыть файл.\n"));
                 }
                 else
                 {
                     std::string filename = view.getUserInput("Введите название файла (с расширением) для сохранения: ");
                     image.savePPM(filename);
+                    view.displayMessage(std::string("Файл сохранен успешно.\n"));
                 }
                 continue;
             }
@@ -144,4 +146,52 @@ void Controller::commandFile()
     //field.print();
 
 
+}
+
+void Controller::print(const Image& img) const
+{
+    std::string message;
+    for (size_t i = 0; i < img.getHeight(); i++)
+    {
+        for (size_t j = 0; j < img.getWidth(); j++)
+        {
+            message.append(std::to_string(static_cast<int>(img.getPixel(i, j).color)) + "\t");
+        }
+        message.append("\n");
+    }
+    message.append("\n");
+
+    view.displayMessage(message);
+}
+
+void Controller::imageIntoField(Image& img, Field& fld) const
+{
+    for (size_t i = 0; i < img.getHeight(); i++)
+    {
+        for (size_t j = 0; j < img.getWidth(); j++)
+        {
+            if (img.getPixel(i, j).color == 255)
+            {
+                fld.getCell(i, j) = Cell::solid;
+            }
+        }
+    }
+}
+
+void Controller::fieldIntoImage(Field& fld, Image& img) const
+{
+    for (size_t i = 0; i < fld.getHeight(); i++)
+    {
+        for (size_t j = 0; j < fld.getWidth(); j++)
+        {
+            if (fld.getCell(i, j) == Cell::solid)
+            {
+                img.getPixel(i, j).color = 255;
+            }
+            else
+            {
+                img.getPixel(i, j).color = 0;
+            }
+        }
+    }
 }

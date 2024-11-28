@@ -15,4 +15,11 @@ public:
 private:
 
     void commandFile();
+
+    void print(const Image& img) const;
+
+    //void formating() const;
+
+    void imageIntoField(Image& img, Field& fld) const;
+    void fieldIntoImage(Field& fld, Image& img) const;
 };

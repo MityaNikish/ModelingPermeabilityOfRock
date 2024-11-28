@@ -77,18 +77,3 @@ Image Image::crop(int x, int y, int newWidth, int newHeight) {
 
     return crop_image;
 }
-
-
-//  Вывод (для отладки)
-void Image::print() const
-{
-    for (size_t i = 0; i < _height; i++)
-    {
-        for (size_t j = 0; j < _width; j++)
-        {
-            std::cout << static_cast<int>(getPixel(i, j).color) << "\t";
-        }
-        std::cout << "\n";
-    }
-    std::cout << "\n";
-}
