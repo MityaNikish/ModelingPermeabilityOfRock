@@ -3,21 +3,17 @@
 #include "Image.h"
 #include "ConsoleView.h"
 
-
-#include <unordered_map>
-#include <memory>
-
 /**
  * @class Controller
  * @brief Класс взаимодействия всех модулей.
  */
-class Controller {
+class Controller
+{
     //Field field;
-    Image image;
-    ConsoleView view;
+    Image _image;
+    ConsoleView _view;
 
 public:
-
     /**
     * @brief Запускает цикл работы с программой.
     */
@@ -27,10 +23,4 @@ private:
 
     //Цикл подпрограммы
     void commandFile();
-    //Отрисовка изображения
-    void print(const Image& img) const;
-    //Конвертация изображения в поле ячеек
-    void imageIntoField(const Image& img, Field& fld) const;
-    //Конвертация поля ячеек в изображение
-    void fieldIntoImage(const Field& fld, Image& img) const;
 };
