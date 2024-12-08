@@ -34,6 +34,9 @@
     <Filter Include="MVC\Model\Image">
       <UniqueIdentifier>{058d1562-01c8-416d-af18-c0507972811a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DiagonalMatrix">
+      <UniqueIdentifier>{bd9192c6-c0da-4265-898d-f91310df45a3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Field.h">
@@ -47,6 +50,9 @@
     </ClInclude>
     <ClInclude Include="Controller.h">
       <Filter>MVC\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="DiagonalMatrix.h">
+      <Filter>DiagonalMatrix</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
