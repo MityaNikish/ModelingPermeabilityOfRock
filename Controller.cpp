@@ -32,7 +32,6 @@ public:
     void execute() const override
     {
         _controller.view.clearScreen();
-        //Command::getView().clearScreen();
     }
     void info() const override
     {
@@ -81,6 +80,10 @@ public:
     }
 };
 
+/**
+ * @class OpenCommand
+ * @brief Команда для запуска подпрограммы для .
+ */
 class FileCommand : public Command
 {
 public:
@@ -88,14 +91,14 @@ public:
 
     void execute() const override
     {
-        std::string filename;
-        filename = _controller.view.getUserInput("Введите название другого файла (с расширением): ");
+        std::string filename = _controller.view.getUserInput("Введите название файла (с расширением): ");
         _controller.image.readPPM(filename);
         _controller.view.displayMessage(std::string("Файл открыт успешно.\n"));
+        _controller.commandFile();
     }
     void info() const override
     {
-        _controller.view.displayMessage(std::string("file - открыть файла;"));
+        _controller.view.displayMessage(std::string("file - запуск подпрограммы для работы с сегментированными цифровыми изображениями горной породы;"));
     }
 };
 
@@ -263,10 +266,12 @@ public:
 
     void execute() const override
     {
+        _controller.view.displayMessage(std::string("________________________________________________________________"));
         _controller.view.displayMessage(std::string("Доступные команды:\n"));
         for (const auto& pair : _commands) {
             pair.second->info();
         }
+        _controller.view.displayMessage(std::string("________________________________________________________________\n"));
     }
     void info() const override
     {
@@ -305,16 +310,17 @@ public:
 
 void Controller::run()
 {
-    view.displayMessage(std::string("Введите help для просмотра списка команд;\n"));
     CommandManager manager;
 
     // Добавляем команды
+    manager.addCommand("help", std::make_shared<HelpCommand>(*this, manager.getCommands()));
     manager.addCommand("clear", std::make_shared<ClearCommand>(*this));
     manager.addCommand("exit", std::make_shared<ExitCommand>(*this));
-    manager.addCommand("help", std::make_shared<HelpCommand>(*this, manager.getCommands()));
+    manager.addCommand("file", std::make_shared<FileCommand>(*this));
 
     std::string input;
 
+    view.displayMessage(std::string("Введите help для просмотра списка команд.\n"));
     while (true)
     {
         try
@@ -325,16 +331,8 @@ void Controller::run()
             {
                 break;
             }
-            if (input == "file")
-            {
-                std::string filename = view.getUserInput("Введите название файла (с расширением): ");
-                image.readPPM(filename);
-                view.displayMessage(std::string("Файл открыт успешно.\n"));
-                commandFile();
-            }
 
             manager.executeCommand(input);
-            view.displayMessage("\n");
         }
         catch (const std::exception& e)
         {
@@ -348,10 +346,10 @@ void Controller::run()
 //Цикл подпрограммы
 void Controller::commandFile()
 {
-    view.displayMessage(std::string("Введите help для просмотра списка команд.\n"));
     CommandManager manager;
 
     // Добавляем команды
+    manager.addCommand("help", std::make_shared<HelpCommand>(*this, manager.getCommands()));
     manager.addCommand("clear", std::make_shared<ClearCommand>(*this));
     manager.addCommand("exit", std::make_shared<ExitCommand>(*this));
     manager.addCommand("open", std::make_shared<OpenCommand>(*this));
@@ -359,10 +357,10 @@ void Controller::commandFile()
     manager.addCommand("cut", std::make_shared<CutCommand>(*this));
     manager.addCommand("correct", std::make_shared<CorrectCommand>(*this));
     manager.addCommand("save", std::make_shared<SaveCommand>(*this));
-    manager.addCommand("help", std::make_shared<HelpCommand>(*this, manager.getCommands()));
 
     std::string input;
 
+    view.displayMessage(std::string("Введите help для просмотра списка команд.\n"));
     while (true)
     {
         try
@@ -374,7 +372,6 @@ void Controller::commandFile()
             }
 
             manager.executeCommand(input);
-            view.displayMessage("\n");
         }
         catch (const std::exception& e)
         {

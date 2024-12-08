@@ -4,12 +4,11 @@
 #include "ConsoleView.h"
 
 /**
- * @class Controller
+ * @struct Controller
  * @brief Класс взаимодействия всех модулей.
  */
-class Controller
+struct Controller
 {
-public:
     //Field field;
     Image image;
     ConsoleView view;
@@ -19,8 +18,8 @@ public:
     */
     void run();
 
-private:
-
-    //Цикл подпрограммы
+    /**
+    * @brief Цикл подпрограммы.
+    */
     void commandFile();
 };
