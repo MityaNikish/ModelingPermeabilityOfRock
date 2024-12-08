@@ -7,14 +7,19 @@ void Controller::run() {
     while (true)
     {
         try {
-            std::string command = view.getUserInput("~");
+            std::string command = view.getUserInput("~ ");
 
             if (command == std::string("help"))
             {
+                view.displayMessage(std::string("________________________________________________________________________________________________________________________________________________________________"));
                 view.displayMessage(std::string("help - список команд;"));
                 view.displayMessage(std::string("exit - завершение работы программы;"));
-                view.displayMessage(std::string("file - запуск подпрограммы для работы с сегментированными цифровыми изображениями горной породы;\n"));
-                view.displayMessage(std::string("solver - запуск подпрограммы для решения уравнения Стокса;\n"));
+                view.displayMessage(std::string("clear - очистка консоли;"));
+                view.displayMessage(std::string("\n"));
+                view.displayMessage(std::string("file - запуск подпрограммы для работы с сегментированными цифровыми изображениями горной породы;"));
+                view.displayMessage(std::string("solver - запуск подпрограммы для решения уравнения Стокса;"));
+                view.displayMessage(std::string("________________________________________________________________________________________________________________________________________________________________"));
+                view.displayMessage(std::string("\n"));
                 continue;
             }
             if (command == std::string("file"))
@@ -28,6 +33,11 @@ void Controller::run() {
             if (command == std::string("solver"))
             {
                 view.displayMessage(std::string("Подпрограмма находится на стадии разработки.\n"));
+                continue;
+            }
+            if (command == std::string("clear"))
+            {
+                view.clearScreen();
                 continue;
             }
             if (command == std::string("exit"))
@@ -53,13 +63,18 @@ void Controller::commandFile()
             std::string command = view.getUserInput("file~ ");
             if (command == std::string("help"))
             {
+                view.displayMessage(std::string("________________________________________________________________________________________________________________________________________________________________"));
                 view.displayMessage(std::string("help - список команд;"));
                 view.displayMessage(std::string("exit - выхыход из подраздела file;"));
+                view.displayMessage(std::string("clear - очистка консоли;"));
+                view.displayMessage(std::string("\n"));
                 view.displayMessage(std::string("open - открыть файла;"));
                 view.displayMessage(std::string("print - вывести содержимое файла;"));
                 view.displayMessage(std::string("cut - вырезать содержимое файла;"));
-                view.displayMessage(std::string("correct - удаление замкнутых пор и добавление границ;"));
-                view.displayMessage(std::string("save - сохранить данные в файл;\n"));
+                view.displayMessage(std::string("correct - удаление замкнутых пор, удаление не сквозных путей и добавление границ;"));
+                view.displayMessage(std::string("save - сохранить данные в файл;"));
+                view.displayMessage(std::string("________________________________________________________________________________________________________________________________________________________________"));
+                view.displayMessage(std::string("\n"));
                 continue;
             }
             if (command == std::string("open"))
@@ -107,6 +122,11 @@ void Controller::commandFile()
                 std::string filename = view.getUserInput("Введите название файла (с расширением) для сохранения: ");
                 image.savePPM(filename);
                 view.displayMessage(std::string("Файл сохранен успешно.\n"));
+                continue;
+            }
+            if (command == std::string("clear"))
+            {
+                view.clearScreen();
                 continue;
             }
             if (command == std::string("exit"))

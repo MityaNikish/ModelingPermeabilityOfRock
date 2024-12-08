@@ -3,6 +3,10 @@
 #include "Image.h"
 #include "ConsoleView.h"
 
+
+#include <unordered_map>
+#include <memory>
+
 /**
  * @class Controller
  * @brief Класс взаимодействия всех модулей.

@@ -1,5 +1,6 @@
 #include "ConsoleView.h"
 #include <iostream>
+#include <cstdlib>
 
 void ConsoleView::displayMessage(const std::string& message) const
 {
@@ -12,4 +13,9 @@ std::string ConsoleView::getUserInput(const std::string& prompt) const
     std::string input;
     std::getline(std::cin, input);
     return input;
+}
+
+void ConsoleView::clearScreen() const
+{
+    system("cls");
 }

@@ -15,4 +15,8 @@ public:
     * @brief Запрос ввода даннных с консоли
     */
     std::string getUserInput(const std::string& prompt) const;
+    /**
+    * @brief Очищает консоль
+    */
+    void clearScreen() const;
 };
