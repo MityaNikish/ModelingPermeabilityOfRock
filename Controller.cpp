@@ -1,44 +1,53 @@
-#include "Controller.h"
-#include <sstream>
-
+п»ї#include "Controller.h"
 #include <unordered_map>
+#include <stdexcept>
 #include <memory>
 
-
-// Интерфейс для команд
+/**
+ * @class Command
+ * @brief РРЅС‚РµСЂС„РµР№СЃ РґР»СЏ РєРѕРјР°РЅРґ.
+ */
 class Command
 {
+protected:
+    Controller& _controller;
+
 public:
+    Command(Controller& controller) : _controller(controller) { }
+
     virtual ~Command() = default;
     virtual void execute() const = 0;
     virtual void info() const = 0;
 };
 
+/**
+ * @class ClearCommand
+ * @brief РљРѕРјР°РЅРґР° РґР»СЏ РѕС‡РёСЃС‚РєРё СЌРєСЂР°РЅР°.
+ */
 class ClearCommand : public Command
 {
-private:
-    ConsoleView& _view;
-
 public:
-    explicit ClearCommand(ConsoleView& _view) : _view(_view) { }
+    explicit ClearCommand(Controller& controller) : Command(controller) { }
 
     void execute() const override
     {
-        _view.clearScreen();
+        _controller.view.clearScreen();
+        //Command::getView().clearScreen();
     }
     void info() const override
     {
-        _view.displayMessage(std::string("clear - очистка консоли;"));
+        _controller.view.displayMessage(std::string("clear - РѕС‡РёСЃС‚РєР° РєРѕРЅСЃРѕР»Рё;"));
     }
 };
 
+/**
+ * @class ExitCommand
+ * @brief РљРѕРјР°РЅРґР° РґР»СЏ РІС‹С…РѕРґР° РёР· РїСЂРѕРіСЂР°РјРјС‹/РїРѕРґРїСЂРѕРіСЂР°РјРјС‹.
+ */
 class ExitCommand : public Command
 {
-private:
-    ConsoleView& _view;
-
 public:
-    explicit ExitCommand(ConsoleView& _view) : _view(_view) { }
+    explicit ExitCommand(Controller& controller) : Command(controller) { }
 
     void execute() const override
     {
@@ -46,124 +55,145 @@ public:
     }
     void info() const override
     {
-        _view.displayMessage(std::string("exit - завершение работы программы;"));
+        _controller.view.displayMessage(std::string("exit - Р·Р°РІРµСЂС€РµРЅРёРµ СЂР°Р±РѕС‚С‹ РїСЂРѕРіСЂР°РјРјС‹;"));
     }
 };
 
+/**
+ * @class OpenCommand
+ * @brief РљРѕРјР°РЅРґР° РґР»СЏ РѕС‚РєСЂС‹С‚РёСЏ С„Р°Р№Р»Р°.
+ */
 class OpenCommand : public Command
 {
-private:
-    ConsoleView& _view;
-    Image& _image;
-
 public:
-    explicit OpenCommand(ConsoleView& _view, Image& _image) : _view(_view), _image(_image) { }
+    explicit OpenCommand(Controller& controller) : Command(controller) { }
 
     void execute() const override
     {
         std::string filename;
-        filename = _view.getUserInput("Введите название другого файла (с расширением): ");
-        _image.readPPM(filename);
-        _view.displayMessage(std::string("Файл открыт успешно.\n"));
+        filename = _controller.view.getUserInput("Р’РІРµРґРёС‚Рµ РЅР°Р·РІР°РЅРёРµ РґСЂСѓРіРѕРіРѕ С„Р°Р№Р»Р° (СЃ СЂР°СЃС€РёСЂРµРЅРёРµРј): ");
+        _controller.image.readPPM(filename);
+        _controller.view.displayMessage(std::string("Р¤Р°Р№Р» РѕС‚РєСЂС‹С‚ СѓСЃРїРµС€РЅРѕ.\n"));
     }
     void info() const override
     {
-        _view.displayMessage(std::string("open - открыть файла;"));
+        _controller.view.displayMessage(std::string("open - РѕС‚РєСЂС‹С‚СЊ С„Р°Р№Р»Р°;"));
     }
 };
 
-class PrintCommand : public Command
+class FileCommand : public Command
 {
-private:
-    ConsoleView& _view;
-    Image& _image;
-
 public:
-    explicit PrintCommand(ConsoleView& _view, Image& _image) : _view(_view), _image(_image) { }
+    explicit FileCommand(Controller& controller) : Command(controller) { }
 
     void execute() const override
     {
-        _view.displayMessage(std::string("Длина изображения: ") + std::to_string(_image.getWidth()));
-        _view.displayMessage(std::string("Высота изображения: ") + std::to_string(_image.getHeight()));
+        std::string filename;
+        filename = _controller.view.getUserInput("Р’РІРµРґРёС‚Рµ РЅР°Р·РІР°РЅРёРµ РґСЂСѓРіРѕРіРѕ С„Р°Р№Р»Р° (СЃ СЂР°СЃС€РёСЂРµРЅРёРµРј): ");
+        _controller.image.readPPM(filename);
+        _controller.view.displayMessage(std::string("Р¤Р°Р№Р» РѕС‚РєСЂС‹С‚ СѓСЃРїРµС€РЅРѕ.\n"));
+    }
+    void info() const override
+    {
+        _controller.view.displayMessage(std::string("file - РѕС‚РєСЂС‹С‚СЊ С„Р°Р№Р»Р°;"));
+    }
+};
+
+/**
+ * @class PrintCommand
+ * @brief РљРѕРјР°РЅРґР° РґР»СЏ РІС‹РІРѕРґР° РёР·РѕР±СЂР°Р¶РµРЅРёСЏ.
+ */
+class PrintCommand : public Command
+{
+public:
+    explicit PrintCommand(Controller& controller) : Command(controller) { }
+
+    void execute() const override
+    {
+        _controller.view.displayMessage(std::string("Р”Р»РёРЅР° РёР·РѕР±СЂР°Р¶РµРЅРёСЏ: ") + std::to_string(_controller.image.getWidth()));
+        _controller.view.displayMessage(std::string("Р’С‹СЃРѕС‚Р° РёР·РѕР±СЂР°Р¶РµРЅРёСЏ: ") + std::to_string(_controller.image.getHeight()));
         print();
     }
     void info() const override
     {
-        _view.displayMessage(std::string("print - вывести содержимое файла;"));
+        _controller.view.displayMessage(std::string("print - РІС‹РІРµСЃС‚Рё СЃРѕРґРµСЂР¶РёРјРѕРµ С„Р°Р№Р»Р°;"));
     }
 
 private:
     void print() const
     {
         std::string message;
-        for (size_t i = 0; i < _image.getHeight(); i++)
+        for (size_t i = 0; i < _controller.image.getHeight(); i++)
         {
-            for (size_t j = 0; j < _image.getWidth(); j++)
+            for (size_t j = 0; j < _controller.image.getWidth(); j++)
             {
-                message.append(std::to_string(static_cast<int>(_image.getPixel(i, j).color)) + "\t");
+                message.append(std::to_string(static_cast<int>(_controller.image.getPixel(_controller.image.getHeight() - i, j).color)) + "\t");
             }
             message.append("\n");
         }
         message.append("\n");
 
-        _view.displayMessage(message);
+        _controller.view.displayMessage(message);
     }
 };
 
+/**
+ * @class CutCommand
+ * @brief РљРѕРјР°РЅРґР° РґР»СЏ РѕР±СЂРµР·Р°РЅРёСЏ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ.
+ */
 class CutCommand : public Command
 {
-private:
-    ConsoleView& _view;
-    Image& _image;
-
 public:
-    explicit CutCommand(ConsoleView& _view, Image& _image) : _view(_view), _image(_image) { }
+    explicit CutCommand(Controller& controller) : Command(controller) { }
 
     void execute() const override
     {
-        std::string params = _view.getUserInput("Введите параметры обрезки (через пробел) [x1, y1, x2 - x1, y2 - y1] ");
-        std::stringstream ss(params);
-        int x, y, width, height;
-        ss >> x;
-        ss >> y;
-        ss >> width;
-        ss >> height;
+        std::vector<std::string> params = _controller.view.getUserInputList("Р’РІРµРґРёС‚Рµ РїР°СЂР°РјРµС‚СЂС‹ РѕР±СЂРµР·РєРё (С‡РµСЂРµР· РїСЂРѕР±РµР») [x1, y1, x2 - x1, y2 - y1] ");
+        
+        if (params.size() != 4)
+        {
+            throw std::runtime_error("РќРµРІРµСЂРЅРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ Р°СЂРіСѓРјРµРЅС‚РѕРІ");
+        }
+        int x = std::stoi(params[0]);
+        int y = std::stoi(params[1]);
+        int width = std::stoi(params[2]);
+        int height = std::stoi(params[3]);
 
-        _image = _image.crop(x, y, width, height);
-        _view.displayMessage(std::string("Файл обрезан успешно.\n"));
+        _controller.image = _controller.image.crop(x, y, width, height);
+        _controller.view.displayMessage(std::string("Р¤Р°Р№Р» РѕР±СЂРµР·Р°РЅ СѓСЃРїРµС€РЅРѕ.\n"));
     }
     void info() const override
     {
-        _view.displayMessage(std::string("cut - вырезать содержимое файла;"));
+        _controller.view.displayMessage(std::string("cut - РІС‹СЂРµР·Р°С‚СЊ СЃРѕРґРµСЂР¶РёРјРѕРµ С„Р°Р№Р»Р°;"));
     }
 };
 
+/**
+ * @class CorrectCommand
+ * @brief РљРѕРјР°РЅРґР° РґР»СЏ РѕР±СЂР°Р±РѕС‚РєРё РёР·РѕР±СЂР°Р¶РµРЅРёСЏ.
+ */
 class CorrectCommand : public Command
 {
-private:
-    ConsoleView& _view;
-    Image& _image;
-
 public:
-    explicit CorrectCommand(ConsoleView& _view, Image& _image) : _view(_view), _image(_image) { }
+    explicit CorrectCommand(Controller& controller) : Command(controller) { }
 
     void execute() const override
     {
-        Field field(_image.getWidth(), _image.getHeight());
-        imageIntoField(_image, field);
+        Field field(_controller.image.getWidth(), _controller.image.getHeight());
+        imageIntoField(_controller.image, field);
         field.correction();
         field.addBorders();
-        fieldIntoImage(field, _image);
+        fieldIntoImage(field, _controller.image);
 
-        _view.displayMessage(std::string("Файл обработан успешно.\n"));
+        _controller.view.displayMessage(std::string("Р¤Р°Р№Р» РѕР±СЂР°Р±РѕС‚Р°РЅ СѓСЃРїРµС€РЅРѕ.\n"));
     }
     void info() const override
     {
-        _view.displayMessage(std::string("correct - удаление замкнутых пор, удаление не сквозных путей и добавление границ;"));
+        _controller.view.displayMessage(std::string("correct - СѓРґР°Р»РµРЅРёРµ Р·Р°РјРєРЅСѓС‚С‹С… РїРѕСЂ, СѓРґР°Р»РµРЅРёРµ РЅРµ СЃРєРІРѕР·РЅС‹С… РїСѓС‚РµР№ Рё РґРѕР±Р°РІР»РµРЅРёРµ РіСЂР°РЅРёС†;"));
     }
 
 private:
-    //Перевод изображения в поле
+    //РџРµСЂРµРІРѕРґ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ РІ РїРѕР»Рµ
     void imageIntoField(const Image& img, Field& fld) const
     {
         for (size_t i = 0; i < img.getHeight(); i++)
@@ -178,7 +208,7 @@ private:
         }
     }
 
-    //Перевод поля в изображение
+    //РџРµСЂРµРІРѕРґ РїРѕР»СЏ РІ РёР·РѕР±СЂР°Р¶РµРЅРёРµ
     void fieldIntoImage(const Field& fld, Image& img) const
     {
         for (size_t i = 0; i < fld.getHeight(); i++)
@@ -198,50 +228,56 @@ private:
     }
 };
 
+/**
+ * @class SaveCommand
+ * @brief РљРѕРјР°РЅРґР° РґР»СЏ СЃРѕС…СЂР°РЅРµРЅРёСЏ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ.
+ */
 class SaveCommand : public Command
 {
-private:
-    ConsoleView& _view;
-    Image& _image;
-
 public:
-    explicit SaveCommand(ConsoleView& _view, Image& _image) : _view(_view), _image(_image) { }
+    explicit SaveCommand(Controller& controller) : Command(controller) { }
 
     void execute() const override
     {
-        std::string filename = _view.getUserInput("Введите название файла (с расширением) для сохранения: ");
-        _image.savePPM(filename);
-        _view.displayMessage(std::string("Файл сохранен успешно.\n"));
+        std::string filename = _controller.view.getUserInput("Р’РІРµРґРёС‚Рµ РЅР°Р·РІР°РЅРёРµ С„Р°Р№Р»Р° (СЃ СЂР°СЃС€РёСЂРµРЅРёРµРј) РґР»СЏ СЃРѕС…СЂР°РЅРµРЅРёСЏ: ");
+        _controller.image.savePPM(filename);
+        _controller.view.displayMessage(std::string("Р¤Р°Р№Р» СЃРѕС…СЂР°РЅРµРЅ СѓСЃРїРµС€РЅРѕ.\n"));
     }
     void info() const override
     {
-        _view.displayMessage(std::string("save - сохранить данные в файл;"));
+        _controller.view.displayMessage(std::string("save - СЃРѕС…СЂР°РЅРёС‚СЊ РґР°РЅРЅС‹Рµ РІ С„Р°Р№Р»;"));
     }
 };
 
+/**
+ * @class HelpCommand
+ * @brief РљРѕРјР°РЅРґР° РґР»СЏ РґРµРјРѕРЅСЃС‚СЂР°С†РёРё СЃРїРёСЃРєР° РєРѕРјР°РЅРґ.
+ */
 class HelpCommand : public Command
 {
 private:
-    ConsoleView& _view;
     const std::unordered_map<std::string, std::shared_ptr<Command>>& _commands;
 
 public:
-    HelpCommand(ConsoleView& _view, const std::unordered_map<std::string, std::shared_ptr<Command>>& cmds) : _view(_view), _commands(cmds) {}
+    HelpCommand(Controller& controller, const std::unordered_map<std::string, std::shared_ptr<Command>>& cmds) : Command(controller), _commands(cmds) { }
 
     void execute() const override
     {
-        _view.displayMessage(std::string("Доступные команды:\n"));
+        _controller.view.displayMessage(std::string("Р”РѕСЃС‚СѓРїРЅС‹Рµ РєРѕРјР°РЅРґС‹:\n"));
         for (const auto& pair : _commands) {
             pair.second->info();
         }
     }
     void info() const override
     {
-        _view.displayMessage(std::string("help - список команд;"));
+        _controller.view.displayMessage(std::string("help - СЃРїРёСЃРѕРє РєРѕРјР°РЅРґ;"));
     }
 };
 
-// Менеджер команд
+/**
+ * @class CommandManager
+ * @brief РњРµРЅРµРґР¶РµСЂ РєРѕРјРјР°РЅРґ.
+ */
 class CommandManager {
 private:
     std::unordered_map<std::string, std::shared_ptr<Command>> _commands;
@@ -269,13 +305,13 @@ public:
 
 void Controller::run()
 {
-    _view.displayMessage(std::string("Введите help для просмотра списка команд;\n"));
+    view.displayMessage(std::string("Р’РІРµРґРёС‚Рµ help РґР»СЏ РїСЂРѕСЃРјРѕС‚СЂР° СЃРїРёСЃРєР° РєРѕРјР°РЅРґ;\n"));
     CommandManager manager;
 
-    // Добавляем команды
-    manager.addCommand("clear", std::make_shared<ClearCommand>(_view));
-    manager.addCommand("exit", std::make_shared<ExitCommand>(_view));
-    manager.addCommand("help", std::make_shared<HelpCommand>(_view, manager.getCommands()));
+    // Р”РѕР±Р°РІР»СЏРµРј РєРѕРјР°РЅРґС‹
+    manager.addCommand("clear", std::make_shared<ClearCommand>(*this));
+    manager.addCommand("exit", std::make_shared<ExitCommand>(*this));
+    manager.addCommand("help", std::make_shared<HelpCommand>(*this, manager.getCommands()));
 
     std::string input;
 
@@ -283,7 +319,7 @@ void Controller::run()
     {
         try
         {
-            input = _view.getUserInput("~ ");
+            input = view.getUserInput("~ ");
 
             if (input == "exit")
             {
@@ -291,38 +327,39 @@ void Controller::run()
             }
             if (input == "file")
             {
-                std::string filename = _view.getUserInput("Введите название файла (с расширением): ");
-                _image.readPPM(filename);
-                _view.displayMessage(std::string("Файл открыт успешно.\n"));
+                std::string filename = view.getUserInput("Р’РІРµРґРёС‚Рµ РЅР°Р·РІР°РЅРёРµ С„Р°Р№Р»Р° (СЃ СЂР°СЃС€РёСЂРµРЅРёРµРј): ");
+                image.readPPM(filename);
+                view.displayMessage(std::string("Р¤Р°Р№Р» РѕС‚РєСЂС‹С‚ СѓСЃРїРµС€РЅРѕ.\n"));
                 commandFile();
             }
 
             manager.executeCommand(input);
+            view.displayMessage("\n");
         }
         catch (const std::exception& e)
         {
-            _view.displayMessage(std::string("Ошибка: ") + e.what());
-            _view.displayMessage(std::string("Попробуйте снова.\n"));
+            view.displayMessage(std::string("РћС€РёР±РєР°: ") + e.what());
+            view.displayMessage(std::string("РџРѕРїСЂРѕР±СѓР№С‚Рµ СЃРЅРѕРІР°.\n"));
         }
     }
 
 }
 
-//Цикл подпрограммы
+//Р¦РёРєР» РїРѕРґРїСЂРѕРіСЂР°РјРјС‹
 void Controller::commandFile()
 {
-    _view.displayMessage(std::string("Введите help для просмотра списка команд;\n"));
+    view.displayMessage(std::string("Р’РІРµРґРёС‚Рµ help РґР»СЏ РїСЂРѕСЃРјРѕС‚СЂР° СЃРїРёСЃРєР° РєРѕРјР°РЅРґ.\n"));
     CommandManager manager;
 
-    // Добавляем команды
-    manager.addCommand("clear", std::make_shared<ClearCommand>(_view));
-    manager.addCommand("exit", std::make_shared<ExitCommand>(_view));
-    manager.addCommand("open", std::make_shared<OpenCommand>(_view, _image));
-    manager.addCommand("print", std::make_shared<PrintCommand>(_view, _image));
-    manager.addCommand("cut", std::make_shared<CutCommand>(_view, _image));
-    manager.addCommand("correct", std::make_shared<CorrectCommand>(_view, _image));
-    manager.addCommand("save", std::make_shared<SaveCommand>(_view, _image));
-    manager.addCommand("help", std::make_shared<HelpCommand>(_view, manager.getCommands()));
+    // Р”РѕР±Р°РІР»СЏРµРј РєРѕРјР°РЅРґС‹
+    manager.addCommand("clear", std::make_shared<ClearCommand>(*this));
+    manager.addCommand("exit", std::make_shared<ExitCommand>(*this));
+    manager.addCommand("open", std::make_shared<OpenCommand>(*this));
+    manager.addCommand("print", std::make_shared<PrintCommand>(*this));
+    manager.addCommand("cut", std::make_shared<CutCommand>(*this));
+    manager.addCommand("correct", std::make_shared<CorrectCommand>(*this));
+    manager.addCommand("save", std::make_shared<SaveCommand>(*this));
+    manager.addCommand("help", std::make_shared<HelpCommand>(*this, manager.getCommands()));
 
     std::string input;
 
@@ -330,18 +367,19 @@ void Controller::commandFile()
     {
         try
         {
-            input = _view.getUserInput("file~ ");
+            input = view.getUserInput("file~ ");
 
             if (input == "exit") {
                 break;
             }
 
             manager.executeCommand(input);
+            view.displayMessage("\n");
         }
         catch (const std::exception& e)
         {
-            _view.displayMessage(std::string("Ошибка: ") + e.what());
-            _view.displayMessage(std::string("Попробуйте снова.\n"));
+            view.displayMessage(std::string("РћС€РёР±РєР°: ") + e.what());
+            view.displayMessage(std::string("РџРѕРїСЂРѕР±СѓР№С‚Рµ СЃРЅРѕРІР°.\n"));
         }
     }
 }

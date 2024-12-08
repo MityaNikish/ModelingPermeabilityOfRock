@@ -1,20 +1,8 @@
-#include <iostream>
-//#include <fstream>
-//#include <vector>
-//#include <string>
-//#include <sstream>
-
-//#include "Field.h"
-//#include "Image.h"
-#include "Controller.h"
+﻿#include "Controller.h"
 #include "DiagonalMatrix.h"
-#include <string>
-
 
 int main()
 {
-    setlocale(LC_ALL, "Russian");
-
     Controller ctrl;
     ctrl.run();
 

@@ -1,4 +1,4 @@
-#include "Field.h"
+п»ї#include "Field.h"
 #include <iostream>
 
 
@@ -24,13 +24,13 @@ size_t Field::getHeight() const noexcept
     return _height;
 }
 
-//  Удаление замкнутых пор
+//  РЈРґР°Р»РµРЅРёРµ Р·Р°РјРєРЅСѓС‚С‹С… РїРѕСЂ
 void Field::correction() noexcept
 {
     infectionAlgorithm();
 }
 
-//  Добавление нижней и верхней границ
+//  Р”РѕР±Р°РІР»РµРЅРёРµ РЅРёР¶РЅРµР№ Рё РІРµСЂС…РЅРµР№ РіСЂР°РЅРёС†
 void Field::addBorders()
 {
     for (size_t j = 0; j < _width; j++)
@@ -40,7 +40,7 @@ void Field::addBorders()
     }
 }
 
-//  Вывод (для отладки)
+//  Р’С‹РІРѕРґ (РґР»СЏ РѕС‚Р»Р°РґРєРё)
 //void Field::print() const
 //{
 //    for (size_t i = 0; i < _height; i++)
@@ -54,13 +54,13 @@ void Field::addBorders()
 //    std::cout << "\n";
 //}
 
-//  Алгоритм "Заражения" для удаления замкнутых пор
+//  РђР»РіРѕСЂРёС‚Рј "Р—Р°СЂР°Р¶РµРЅРёСЏ" РґР»СЏ СѓРґР°Р»РµРЅРёСЏ Р·Р°РјРєРЅСѓС‚С‹С… РїРѕСЂ
 void Field::infectionAlgorithm() noexcept
 {
     std::vector<bool> flags(_width * _height, false);
     std::vector<std::pair<int, int>> pool;
 
-    //Поры левой границы
+    //РџРѕСЂС‹ Р»РµРІРѕР№ РіСЂР°РЅРёС†С‹
     for (size_t i = 0; i < _height; i++)
     {
         if (getCell(i, 0) != Cell::solid)
@@ -71,7 +71,7 @@ void Field::infectionAlgorithm() noexcept
         }
     }
 
-    //Заполнение доступных пор
+    //Р—Р°РїРѕР»РЅРµРЅРёРµ РґРѕСЃС‚СѓРїРЅС‹С… РїРѕСЂ
     while (!pool.empty())
     {
         std::pair<int, int> pos = pool.back();
@@ -87,13 +87,13 @@ void Field::infectionAlgorithm() noexcept
         getCell(i, j) = Cell::pore;
     }
 
-    //Заполнение не доступных пор солидами
+    //Р—Р°РїРѕР»РЅРµРЅРёРµ РЅРµ РґРѕСЃС‚СѓРїРЅС‹С… РїРѕСЂ СЃРѕР»РёРґР°РјРё
     for (size_t n = 0; n < _width * _height; n++)
     {
         if (_cells[n] == Cell::nan) _cells[n] = Cell::solid;
     }
 
-    //Проверка на сквозное течение
+    //РџСЂРѕРІРµСЂРєР° РЅР° СЃРєРІРѕР·РЅРѕРµ С‚РµС‡РµРЅРёРµ
     size_t i = 0;
     while (i < _height)
     {
@@ -109,7 +109,7 @@ void Field::infectionAlgorithm() noexcept
     }
 }
 
-//Удаление не сквазных путей  
+//РЈРґР°Р»РµРЅРёРµ РЅРµ СЃРєРІР°Р·РЅС‹С… РїСѓС‚РµР№  
 void Field::through(const std::pair<int, int>& pos) noexcept
 {
     std::vector<bool> flags(_width * _height, false);
@@ -149,7 +149,7 @@ void Field::through(const std::pair<int, int>& pos) noexcept
     return;
 }
 
-//  Проверка условия, подходит ли сосед ячейки для обработки
+//  РџСЂРѕРІРµСЂРєР° СѓСЃР»РѕРІРёСЏ, РїРѕРґС…РѕРґРёС‚ Р»Рё СЃРѕСЃРµРґ СЏС‡РµР№РєРё РґР»СЏ РѕР±СЂР°Р±РѕС‚РєРё
 inline bool Field::isPore(int i, int j, std::vector<bool>& flags) const noexcept
 {
     if (i < 0 || i >= _height || j < 0 || j >= _width)
@@ -162,7 +162,7 @@ inline bool Field::isPore(int i, int j, std::vector<bool>& flags) const noexcept
     return !flags_before && getCell(i, j) == Cell::pore;
 }
 
-//  Проверка условия, подходит ли сосед ячейки для обработки
+//  РџСЂРѕРІРµСЂРєР° СѓСЃР»РѕРІРёСЏ, РїРѕРґС…РѕРґРёС‚ Р»Рё СЃРѕСЃРµРґ СЏС‡РµР№РєРё РґР»СЏ РѕР±СЂР°Р±РѕС‚РєРё
 inline bool Field::isNecessaryNeighbor(int i, int j, std::vector<bool>& flags) const noexcept
 {
     if (i < 0 || i >= _height || j < 0 || j >= _width)
@@ -175,7 +175,7 @@ inline bool Field::isNecessaryNeighbor(int i, int j, std::vector<bool>& flags) c
     return !flags_before && getCell(i, j) == Cell::nan;
 }
 
-////  Проверка условия, подходит ли сосед ячейки для обработки
+////  РџСЂРѕРІРµСЂРєР° СѓСЃР»РѕРІРёСЏ, РїРѕРґС…РѕРґРёС‚ Р»Рё СЃРѕСЃРµРґ СЏС‡РµР№РєРё РґР»СЏ РѕР±СЂР°Р±РѕС‚РєРё
 //inline bool Field::isCheck(bool& state_cell, bool conditions) const noexcept
 //{
 //    bool state_cell_temp = state_cell;
@@ -183,7 +183,7 @@ inline bool Field::isNecessaryNeighbor(int i, int j, std::vector<bool>& flags) c
 //    return !state_cell_temp && conditions;
 //}
 //
-////  Проверка условия, подходит ли сосед ячейки для обработки
+////  РџСЂРѕРІРµСЂРєР° СѓСЃР»РѕРІРёСЏ, РїРѕРґС…РѕРґРёС‚ Р»Рё СЃРѕСЃРµРґ СЏС‡РµР№РєРё РґР»СЏ РѕР±СЂР°Р±РѕС‚РєРё
 //inline bool Field::isPore(int i, int j) const noexcept
 //{
 //    if (i < 0 || i >= _height || j < 0 || j >= _width)
@@ -193,7 +193,7 @@ inline bool Field::isNecessaryNeighbor(int i, int j, std::vector<bool>& flags) c
 //    return getCell(i, j) == Cell::pore;
 //}
 //
-////  Проверка условия, подходит ли сосед ячейки для обработки
+////  РџСЂРѕРІРµСЂРєР° СѓСЃР»РѕРІРёСЏ, РїРѕРґС…РѕРґРёС‚ Р»Рё СЃРѕСЃРµРґ СЏС‡РµР№РєРё РґР»СЏ РѕР±СЂР°Р±РѕС‚РєРё
 //inline bool Field::isNan(int i, int j) const noexcept
 //{
 //    if (i < 0 || i >= _height || j < 0 || j >= _width)

@@ -1,22 +1,24 @@
-#pragma once
+п»ї#pragma once
 #include <string>
+#include <vector>
 
 /**
  * @class ConsoleView
- * @brief Класс для отрисовки пользовательского интерфейса в консоль
+ * @brief РљР»Р°СЃСЃ РґР»СЏ РѕС‚СЂРёСЃРѕРІРєРё РїРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєРѕРіРѕ РёРЅС‚РµСЂС„РµР№СЃР° РІ РєРѕРЅСЃРѕР»СЊ
  */
 class ConsoleView {
 public:
     /**
-    * @brief Отображение текста в консоль
+    * @brief РћС‚РѕР±СЂР°Р¶РµРЅРёРµ С‚РµРєСЃС‚Р° РІ РєРѕРЅСЃРѕР»СЊ
     */
     void displayMessage(const std::string& message) const;
     /**
-    * @brief Запрос ввода даннных с консоли
+    * @brief Р—Р°РїСЂРѕСЃ РІРІРѕРґР° РґР°РЅРЅРЅС‹С… СЃ РєРѕРЅСЃРѕР»Рё
     */
     std::string getUserInput(const std::string& prompt) const;
     /**
-    * @brief Очищает консоль
+    * @brief РћС‡РёС‰Р°РµС‚ РєРѕРЅСЃРѕР»СЊ
     */
     void clearScreen() const;
+    std::vector<std::string> getUserInputList(const std::string& prompt) const;
 };
