@@ -1,0 +1,79 @@
+\doxysection{Field Class Reference}
+\hypertarget{class_field}{}\label{class_field}\index{Field@{Field}}
+
+
+Класс для обработки двумерного среза керна.  
+
+
+
+
+{\ttfamily \#include $<$Field.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_field_a407f4ffa6b794089314f82499deffde3}\label{class_field_a407f4ffa6b794089314f82499deffde3} 
+{\bfseries Field} (int width, int height)
+\begin{DoxyCompactList}\small\item\em Конструктор пустого поля \end{DoxyCompactList}\item 
+Cell \& \mbox{\hyperlink{class_field_a762e83b679ab8f27205e2cafe72a14da}{get\+Cell}} (int i, int j) noexcept
+\begin{DoxyCompactList}\small\item\em Обращается к ячейке на позиции (i, j) по ссылке \end{DoxyCompactList}\item 
+Cell \mbox{\hyperlink{class_field_a0c68952f6a0d936e2a295543aada143a}{get\+Cell}} (int i, int j) const noexcept
+\begin{DoxyCompactList}\small\item\em Возвращает значение ячейки на позиции (i, j) \end{DoxyCompactList}\item 
+\Hypertarget{class_field_a29ac22f9a19074a26513ac5da4fabdde}\label{class_field_a29ac22f9a19074a26513ac5da4fabdde} 
+size\+\_\+t {\bfseries get\+Width} () const noexcept
+\begin{DoxyCompactList}\small\item\em Возвращает длинну поля по X. \end{DoxyCompactList}\item 
+\Hypertarget{class_field_a6cf0142b55bbd37b5aa275b796692c43}\label{class_field_a6cf0142b55bbd37b5aa275b796692c43} 
+size\+\_\+t {\bfseries get\+Height} () const noexcept
+\begin{DoxyCompactList}\small\item\em Возвращает высоту поля по Y. \end{DoxyCompactList}\item 
+\Hypertarget{class_field_a213dc4a8ab21f9bad028b72b33768347}\label{class_field_a213dc4a8ab21f9bad028b72b33768347} 
+void {\bfseries correction} () noexcept
+\begin{DoxyCompactList}\small\item\em Удаляет замкнутые поры и не сквозные пути \end{DoxyCompactList}\item 
+\Hypertarget{class_field_ad1a07a8d30eb616a252df7268d3bf2f2}\label{class_field_ad1a07a8d30eb616a252df7268d3bf2f2} 
+void {\bfseries add\+Borders} ()
+\begin{DoxyCompactList}\small\item\em Добавляет слой твердых ячеек на верхней и нижней границах \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Класс для обработки двумерного среза керна. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_field_a0c68952f6a0d936e2a295543aada143a}\index{Field@{Field}!getCell@{getCell}}
+\index{getCell@{getCell}!Field@{Field}}
+\doxysubsubsection{\texorpdfstring{getCell()}{getCell()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{class_field_a0c68952f6a0d936e2a295543aada143a} 
+Cell Field\+::get\+Cell (\begin{DoxyParamCaption}\item[{int}]{i}{, }\item[{int}]{j}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Возвращает значение ячейки на позиции (i, j) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & Номер строки. \\
+\hline
+{\em j} & Номер столбца. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_field_a762e83b679ab8f27205e2cafe72a14da}\index{Field@{Field}!getCell@{getCell}}
+\index{getCell@{getCell}!Field@{Field}}
+\doxysubsubsection{\texorpdfstring{getCell()}{getCell()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{class_field_a762e83b679ab8f27205e2cafe72a14da} 
+Cell \& Field\+::get\+Cell (\begin{DoxyParamCaption}\item[{int}]{i}{, }\item[{int}]{j}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+Обращается к ячейке на позиции (i, j) по ссылке 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & Номер строки. \\
+\hline
+{\em j} & Номер столбца. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/\+DN\+\_\+\+Kr/source/repos/\+Task/\+Project\+CPP/Field.\+h\item 
+C\+:/\+Users/\+DN\+\_\+\+Kr/source/repos/\+Task/\+Project\+CPP/Field.\+cpp\end{DoxyCompactItemize}
