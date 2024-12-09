@@ -1,16 +1,18 @@
+п»ї/**
+ * @file Image.cpp
+ * @brief Р¤Р°Р№Р» СЂРµР°Р»РёР·Р°С†РёРё РјРѕРґСѓР»СЏ РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ РёР·РѕР±СЂР°Р¶РµРЅРёСЏРјРё PPM (Portable Pixmap).
+ */
 #include "Image.h"
 #include <fstream>
 
-#include <iostream>
-
-Image::Image(int width, int height) : _width(width), _height(height) { }
+Image::Image(int width, int height) : _width(width), _height(height), _pixels(_width * _height) { }
 
 Pixel& Image::getPixel(int i, int j) noexcept
 {
     return _pixels[i * _width + j];
 }
 
-inline Pixel Image::getPixel(int i, int j) const noexcept
+Pixel Image::getPixel(int i, int j) const noexcept
 {
     return _pixels[i * _width + j];
 }
@@ -25,11 +27,12 @@ size_t Image::getHeight() const noexcept
     return _height;
 }
 
-// Чтение изображения PPM
-bool Image::readPPM(const std::string& filename) {
+// Р§С‚РµРЅРёРµ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ PPM
+bool Image::readPPM(const std::string& filename)
+{
     std::ifstream file(filename, std::ios::binary);
     if (!file) {
-        throw std::runtime_error("Не удалось открыть файл");
+        throw std::runtime_error("РќРµ СѓРґР°Р»РѕСЃСЊ РѕС‚РєСЂС‹С‚СЊ С„Р°Р№Р»");
     }
 
     file.read(reinterpret_cast<char*>(&_width), 8);
@@ -44,12 +47,16 @@ bool Image::readPPM(const std::string& filename) {
     return true;
 }
 
-// Сохранение изображения PPM
-bool Image::savePPM(const std::string& filename) {
+// РЎРѕС…СЂР°РЅРµРЅРёРµ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ PPM
+bool Image::savePPM(const std::string& filename)
+{
     std::ofstream file(filename, std::ios::binary);
     if (!file) {
-        throw std::runtime_error("Не удалось открыть файл для записи");
+        throw std::runtime_error("РќРµ СѓРґР°Р»РѕСЃСЊ РѕС‚РєСЂС‹С‚СЊ С„Р°Р№Р» РґР»СЏ Р·Р°РїРёСЃРё");
     }
+
+    file.write(reinterpret_cast<char*>(&_width), 8);
+    file.write(reinterpret_cast<char*>(&_height), 8);
 
     for (size_t i = 0; i < _height; ++i) {
         for (size_t j = 0; j < _width; ++j) {
@@ -59,8 +66,13 @@ bool Image::savePPM(const std::string& filename) {
     return true;
 }
 
-// Обрезка изображения (crop)
-Image Image::crop(int x, int y, int newWidth, int newHeight) {
+// РћР±СЂРµР·РєР° РёР·РѕР±СЂР°Р¶РµРЅРёСЏ (crop)
+Image Image::crop(int x, int y, int newWidth, int newHeight)
+{
+    if (x < 0 || x + newWidth >= _width || y < 0 || y + newHeight >= _height || newWidth == 0 || newHeight == 0) {
+        throw std::runtime_error("РќРµ РєРѕСЂСЂРµРєС‚РЅС‹Рµ РїР°СЂР°РјРµС‚СЂС‹ РґР»СЏ РѕР±СЂРµР·РєРё РёР·РѕР±СЂР°Р¶РµРЅРёСЏ");
+    }
+
     Image crop_image(newWidth, newHeight);
     for (int i = 0; i < newHeight; ++i) {
         for (int j = 0; j < newWidth; ++j) {
@@ -69,19 +81,4 @@ Image Image::crop(int x, int y, int newWidth, int newHeight) {
     }
 
     return crop_image;
-}
-
-
-//  Вывод (для отладки)
-void Image::print() const
-{
-    for (size_t i = 0; i < _height; i++)
-    {
-        for (size_t j = 0; j < _width; j++)
-        {
-            std::cout << static_cast<int>(getPixel(i, j).color) << "\t";
-        }
-        std::cout << "\n";
-    }
-    std::cout << "\n";
 }

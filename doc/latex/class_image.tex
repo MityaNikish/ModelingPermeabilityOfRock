@@ -1,0 +1,133 @@
+\doxysection{Image Class Reference}
+\hypertarget{class_image}{}\label{class_image}\index{Image@{Image}}
+
+
+Класс для работы с изображениями PPM (Portable Pixmap).  
+
+
+
+
+{\ttfamily \#include $<$Image.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_image_a5502e928122744be1d3b89648298e162}\label{class_image_a5502e928122744be1d3b89648298e162} 
+{\bfseries Image} ()=default
+\begin{DoxyCompactList}\small\item\em Конструктор по умолчанию \end{DoxyCompactList}\item 
+\Hypertarget{class_image_aade9850090ee64052d76e6807651d83f}\label{class_image_aade9850090ee64052d76e6807651d83f} 
+\mbox{\hyperlink{class_image}{Image}} \& {\bfseries operator=} (const \mbox{\hyperlink{class_image}{Image}} \&)=default
+\begin{DoxyCompactList}\small\item\em Оператор присваивания \end{DoxyCompactList}\item 
+\mbox{\hyperlink{struct_pixel}{Pixel}} \& \mbox{\hyperlink{class_image_ab080f2fd566b6e187f96e63aeb8c2f0b}{get\+Pixel}} (int i, int j) noexcept
+\begin{DoxyCompactList}\small\item\em Обращается к пикселю на позиции (i, j) по ссылке \end{DoxyCompactList}\item 
+\mbox{\hyperlink{struct_pixel}{Pixel}} \mbox{\hyperlink{class_image_ae389acca4f674c2b94937e18bb391ca3}{get\+Pixel}} (int i, int j) const noexcept
+\begin{DoxyCompactList}\small\item\em Возвращает значение пикселя на позиции (i, j) \end{DoxyCompactList}\item 
+\Hypertarget{class_image_a515bd7814c183331150fa207c73987a0}\label{class_image_a515bd7814c183331150fa207c73987a0} 
+size\+\_\+t {\bfseries get\+Width} () const noexcept
+\begin{DoxyCompactList}\small\item\em Возвращает длинну изображения по X. \end{DoxyCompactList}\item 
+\Hypertarget{class_image_a1897ee488e9185b22da6fa3900a62415}\label{class_image_a1897ee488e9185b22da6fa3900a62415} 
+size\+\_\+t {\bfseries get\+Height} () const noexcept
+\begin{DoxyCompactList}\small\item\em Возвращает высоту изображения по Y. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_image_a0bcccd8cdb88bc3ea9a93b4846a47cbe}{read\+PPM}} (const std\+::string \&filename)
+\begin{DoxyCompactList}\small\item\em Считывает PMM изображение из файла \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_image_a0d9f6de2f8bd87d4bd0967996f559f1d}{save\+PPM}} (const std\+::string \&filename)
+\begin{DoxyCompactList}\small\item\em Сохраняет PMM изображения в файла \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_image}{Image}} \mbox{\hyperlink{class_image_a85f3be7c78db891ba18c46cd2b3c9437}{crop}} (int x, int y, int new\+Width, int new\+Height)
+\begin{DoxyCompactList}\small\item\em Обрезает изображение \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Класс для работы с изображениями PPM (Portable Pixmap). 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_image_a85f3be7c78db891ba18c46cd2b3c9437}\index{Image@{Image}!crop@{crop}}
+\index{crop@{crop}!Image@{Image}}
+\doxysubsubsection{\texorpdfstring{crop()}{crop()}}
+{\footnotesize\ttfamily \label{class_image_a85f3be7c78db891ba18c46cd2b3c9437} 
+\mbox{\hyperlink{class_image}{Image}} Image\+::crop (\begin{DoxyParamCaption}\item[{int}]{x}{, }\item[{int}]{y}{, }\item[{int}]{new\+Width}{, }\item[{int}]{new\+Height}{}\end{DoxyParamCaption})}
+
+
+
+Обрезает изображение 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & Начальняя позиция по X отностительно исходного изображения \\
+\hline
+{\em y} & Начальняя позиция по Y отностительно исходного изображения \\
+\hline
+{\em new\+Width} & Длина вырезаемого изображения по X \\
+\hline
+{\em new\+Height} & Высота вырезаемого изображения по Y\\
+\hline
+\end{DoxyParams}
+Позиция X = 0 и Y = 0 находится в левом нижнем углу \Hypertarget{class_image_ae389acca4f674c2b94937e18bb391ca3}\index{Image@{Image}!getPixel@{getPixel}}
+\index{getPixel@{getPixel}!Image@{Image}}
+\doxysubsubsection{\texorpdfstring{getPixel()}{getPixel()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{class_image_ae389acca4f674c2b94937e18bb391ca3} 
+\mbox{\hyperlink{struct_pixel}{Pixel}} Image\+::get\+Pixel (\begin{DoxyParamCaption}\item[{int}]{i}{, }\item[{int}]{j}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+Возвращает значение пикселя на позиции (i, j) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & Номер строки. \\
+\hline
+{\em j} & Номер столбца. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_image_ab080f2fd566b6e187f96e63aeb8c2f0b}\index{Image@{Image}!getPixel@{getPixel}}
+\index{getPixel@{getPixel}!Image@{Image}}
+\doxysubsubsection{\texorpdfstring{getPixel()}{getPixel()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{class_image_ab080f2fd566b6e187f96e63aeb8c2f0b} 
+\mbox{\hyperlink{struct_pixel}{Pixel}} \& Image\+::get\+Pixel (\begin{DoxyParamCaption}\item[{int}]{i}{, }\item[{int}]{j}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+Обращается к пикселю на позиции (i, j) по ссылке 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & Номер строки. \\
+\hline
+{\em j} & Номер столбца. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_image_a0bcccd8cdb88bc3ea9a93b4846a47cbe}\index{Image@{Image}!readPPM@{readPPM}}
+\index{readPPM@{readPPM}!Image@{Image}}
+\doxysubsubsection{\texorpdfstring{readPPM()}{readPPM()}}
+{\footnotesize\ttfamily \label{class_image_a0bcccd8cdb88bc3ea9a93b4846a47cbe} 
+bool Image\+::read\+PPM (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{filename}{}\end{DoxyParamCaption})}
+
+
+
+Считывает PMM изображение из файла 
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & Относительный путь к файлу. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_image_a0d9f6de2f8bd87d4bd0967996f559f1d}\index{Image@{Image}!savePPM@{savePPM}}
+\index{savePPM@{savePPM}!Image@{Image}}
+\doxysubsubsection{\texorpdfstring{savePPM()}{savePPM()}}
+{\footnotesize\ttfamily \label{class_image_a0d9f6de2f8bd87d4bd0967996f559f1d} 
+bool Image\+::save\+PPM (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{filename}{}\end{DoxyParamCaption})}
+
+
+
+Сохраняет PMM изображения в файла 
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & Относительнй путь к файлу. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/\+DN\+\_\+\+Kr/source/repos/\+Task/\+Project\+CPP/\mbox{\hyperlink{_image_8h}{Image.\+h}}\item 
+C\+:/\+Users/\+DN\+\_\+\+Kr/source/repos/\+Task/\+Project\+CPP/\mbox{\hyperlink{_image_8cpp}{Image.\+cpp}}\end{DoxyCompactItemize}

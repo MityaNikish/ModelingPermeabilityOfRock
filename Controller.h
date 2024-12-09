@@ -1,13 +1,25 @@
-#pragma once
+﻿#pragma once
 #include "Field.h"
 #include "Image.h"
 #include "ConsoleView.h"
 
-class Controller {
+/**
+ * @struct Controller
+ * @brief Класс взаимодействия всех модулей.
+ */
+struct Controller
+{
     //Field field;
-    //Image image;
+    Image image;
     ConsoleView view;
 
-public:
+    /**
+    * @brief Запускает цикл работы с программой.
+    */
     void run();
+
+    /**
+    * @brief Цикл подпрограммы.
+    */
+    void commandFile();
 };

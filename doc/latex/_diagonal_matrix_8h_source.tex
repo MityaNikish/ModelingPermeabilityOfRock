@@ -1,0 +1,110 @@
+\doxysection{Diagonal\+Matrix.\+h}
+\hypertarget{_diagonal_matrix_8h_source}{}\label{_diagonal_matrix_8h_source}\index{C:/Users/DN\_Kr/source/repos/Task/ProjectCPP/DiagonalMatrix.h@{C:/Users/DN\_Kr/source/repos/Task/ProjectCPP/DiagonalMatrix.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <filesystem>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <fstream>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <iomanip>}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Type>}
+\DoxyCodeLine{00009\ \textcolor{keyword}{concept\ }\mbox{\hyperlink{concept_floating_type}{FloatingType}}\ =\ std::is\_floating\_point\_v<Type>;}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{template}\ <FloatingType\ Type\ =\ \textcolor{keywordtype}{double}>}
+\DoxyCodeLine{00012\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_diagonal_matrix}{DiagonalMatrix}}}
+\DoxyCodeLine{00013\ \{}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \_order\_of\_matrix;}
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \_block\_size;}
+\DoxyCodeLine{00016\ \ \ \ \ std::vector<Type>\ \_main\_diagonal;}
+\DoxyCodeLine{00017\ \ \ \ \ std::vector<Type>\ \_side\_diagonal;}
+\DoxyCodeLine{00018\ \ \ \ \ std::vector<Type>\ \_upper\_side\_diagonal;}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00021\ \ \ \ \ \mbox{\hyperlink{class_diagonal_matrix}{DiagonalMatrix}}(std::filesystem::path\ file\_path)}
+\DoxyCodeLine{00022\ \ \ \ \ \{}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ std::ifstream\ fin(file\_path,\ std::ios::binary);}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ fin.read((\textcolor{keywordtype}{char}*)\&\_order\_of\_matrix,\ \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{size\_t}));}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ fin.read((\textcolor{keywordtype}{char}*)\&\_block\_size,\ \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{size\_t}));}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\&\ n\ =\ \_order\_of\_matrix;}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\&\ m\ =\ \_block\_size;}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \_main\_diagonal.resize(n);}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \_side\_diagonal.resize(n\ -\/\ 1);}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \_upper\_side\_diagonal.resize(n\ -\/\ m);}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ fin.read((\textcolor{keywordtype}{char}*)\_main\_diagonal.data(),\ \textcolor{keyword}{sizeof}(Type)\ *\ n);}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ fin.read((\textcolor{keywordtype}{char}*)\_side\_diagonal.data(),\ \textcolor{keyword}{sizeof}(Type)\ *\ (n\ -\/\ 1));}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ fin.read((\textcolor{keywordtype}{char}*)\_upper\_side\_diagonal.data(),\ \textcolor{keyword}{sizeof}(Type)\ *\ (n\ -\/\ m));}
+\DoxyCodeLine{00034\ \ \ \ \ \}}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \ \ \ \ Type\ getElem(\textcolor{keywordtype}{int}\ i,\ \textcolor{keywordtype}{int}\ j)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00037\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ ==\ j)}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_main\_diagonal[i];}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ -\/\ 1\ ==\ j\ ||\ i\ +\ 1\ ==\ j)}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_side\_diagonal[i\ <\ j\ ?\ i\ :\ j];}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ +\ \_block\_size\ ==\ j\ ||\ i\ -\/\ \_block\_size\ ==\ j)}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_upper\_side\_diagonal[i\ <\ j\ ?\ i\ :\ j];}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0.0;}
+\DoxyCodeLine{00051\ \ \ \ \ \}}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordtype}{void}\ write(std::filesystem::path\ file\_path)}
+\DoxyCodeLine{00054\ \ \ \ \ \{}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ std::ofstream\ fout(file\_path,\ std::ios::binary\ |\ std::ios::trunc);}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ fout.write((\textcolor{keywordtype}{char}*)\&\_order\_of\_matrix,\ \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{size\_t}));}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ fout.write((\textcolor{keywordtype}{char}*)\&\_block\_size,\ \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{size\_t}));}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\&\ n\ =\ \_order\_of\_matrix;}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\&\ m\ =\ \_block\_size;}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ fout.write((\textcolor{keywordtype}{char}*)\_main\_diagonal.data(),\ \textcolor{keyword}{sizeof}(Type)\ *\ n);}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ fout.write((\textcolor{keywordtype}{char}*)\_side\_diagonal.data(),\ \textcolor{keyword}{sizeof}(Type)\ *\ (n\ -\/\ 1));}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ fout.write((\textcolor{keywordtype}{char}*)\_upper\_side\_diagonal.data(),\ \textcolor{keyword}{sizeof}(Type)\ *\ (n\ -\/\ m));}
+\DoxyCodeLine{00063\ \ \ \ \ \}}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordtype}{void}\ print(\textcolor{keywordtype}{size\_t}\ n\_setw\ =\ 1)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00066\ \ \ \ \ \{}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ \_order\_of\_matrix;\ i++)}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ \_order\_of\_matrix;\ j++)}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ std::setw(n\_setw\ *\ 2\ +\ 1)\ <<\ std::right\ <<\ getElem(i,\ j);}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ std::string(n\_setw\ -\/\ 1,\ \textcolor{charliteral}{'\(\backslash\)n'})\ <<\ std::endl;}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ std::cout\ <<\ std::endl;}
+\DoxyCodeLine{00076\ \ \ \ \ \}}
+\DoxyCodeLine{00077\ \};}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \textcolor{keywordtype}{void}\ createSLAU(\textcolor{keywordtype}{size\_t}\ Nx,\ \textcolor{keywordtype}{size\_t}\ Ny,\ std::string\ file\_path)}
+\DoxyCodeLine{00080\ \{}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ n\ =\ Nx\ *\ Ny;}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ m\ =\ Nx;}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keywordtype}{double}\ Lx\ =\ 1;}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keywordtype}{double}\ Ly\ =\ 1;}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keywordtype}{double}\ hx\ =\ Lx\ /\ (Nx\ -\/\ 1);}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keywordtype}{double}\ hy\ =\ Ly\ /\ (Ny\ -\/\ 1);}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \ \ \ \ std::vector<double>\ main\_diagonal(n,\ 2.0\ /\ (hx\ *\ hx)\ +\ 2.0\ /\ (hy\ *\ hy));}
+\DoxyCodeLine{00091\ \ \ \ \ std::vector<double>\ side\_diagonal(n\ -\/\ 1,\ -\/1.0\ /\ (hx\ *\ hx));}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 1;\ i\ <\ Ny;\ i++)}
+\DoxyCodeLine{00093\ \ \ \ \ \{}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ side\_diagonal[i\ *\ Nx\ -\/\ 1]\ =\ 0;}
+\DoxyCodeLine{00095\ \ \ \ \ \}}
+\DoxyCodeLine{00096\ \ \ \ \ std::vector<double>\ upper\_side\_diagonal(n\ -\/\ m,\ -\/1.0\ /\ (hy\ *\ hy));}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \ \ \ \ std::ofstream\ fout(file\_path,\ std::ios::binary\ |\ std::ios::trunc);}
+\DoxyCodeLine{00099\ \ \ \ \ fout.write((\textcolor{keywordtype}{char}*)\&n,\ \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{size\_t}));}
+\DoxyCodeLine{00100\ \ \ \ \ fout.write((\textcolor{keywordtype}{char}*)\&m,\ \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{size\_t}));}
+\DoxyCodeLine{00101\ \ \ \ \ fout.write((\textcolor{keywordtype}{char}*)main\_diagonal.data(),\ \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{double})\ *\ n);}
+\DoxyCodeLine{00102\ \ \ \ \ fout.write((\textcolor{keywordtype}{char}*)side\_diagonal.data(),\ \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{double})\ *\ (n\ -\/\ 1));}
+\DoxyCodeLine{00103\ \ \ \ \ fout.write((\textcolor{keywordtype}{char}*)upper\_side\_diagonal.data(),\ \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{double})\ *\ (n\ -\/\ m));}
+\DoxyCodeLine{00104\ \}}
+
+\end{DoxyCode}
